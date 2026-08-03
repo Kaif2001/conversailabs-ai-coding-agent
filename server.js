@@ -1,39 +1,47 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const dns = require("dns");
 
-// create express app
+// Force Google DNS
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+// Load environment variables
+require("dotenv").config();
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+
+const dbConfig = require("./config/database.config");
+
 const app = express();
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+// Parse requests
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// parse application/json
-app.use(bodyParser.json())
-
-// Configuring the database
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
-
-mongoose.Promise = global.Promise;
-
-// Connecting to the database
-mongoose.connect(dbConfig.url, {
-	useNewUrlParser: true
-}).then(() => {
-    console.log("Successfully connected to the database");    
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
+// Connect to MongoDB
+mongoose.connect(dbConfig.url)
+.then(() => {
+    console.log("✅ Successfully connected to MongoDB Atlas");
+})
+.catch((err) => {
+    console.error("❌ Database Connection Error:");
+    console.error(err);
+    process.exit(1);
 });
 
-// define a simple route
-app.get('/', (req, res) => {
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+// Home Route
+app.get("/", (req, res) => {
+    res.json({
+        message: "Welcome to Easy Notes API"
+    });
 });
 
-require('./app/routes/note.routes.js')(app);
+// Routes
+require("./app/routes/note.routes")(app);
 
-// listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+// Start Server
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });

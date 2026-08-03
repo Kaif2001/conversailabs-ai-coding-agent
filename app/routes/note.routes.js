@@ -4,7 +4,7 @@ module.exports = (app) => {
     // Create a new Note
     app.post('/notes', notes.create);
 
-    // Retrieve all Notes
+    // Retrieve all Notes (can support search query e.g. /notes?q=keyword)
     app.get('/notes', notes.findAll);
 
     // Retrieve a single Note with noteId
@@ -15,4 +15,4 @@ module.exports = (app) => {
 
     // Delete a Note with noteId
     app.delete('/notes/:noteId', notes.delete);
-}
+};
