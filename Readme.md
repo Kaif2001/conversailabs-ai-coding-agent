@@ -4,25 +4,25 @@
 
 This project was completed as part of the ConversAI Labs AI Coding Agent assignment.
 
-The objective was to build a Python-based AI agent that can understand an existing Node.js codebase, determine the files that need modification, implement a new product requirement, and summarize the changes.
+The objective was to build a Python-based AI Coding Agent capable of understanding an existing Node.js codebase, identifying the relevant files automatically, implementing a product requirement with minimal user guidance, and summarizing the changes made.
 
-The target application is based on the Node Easy Notes application developed by Callicoder.
+The target application is based on the **Node Easy Notes** project by Callicoder. The Node.js application was enhanced without rewriting it in Python.
 
 ---
 
-# Product Requirement
+# Objective
 
-Improve the application so users can better organise and search their notes.
+User Request:
 
-The AI agent analyzed the repository and implemented the following features:
+> Improve the application so users can better organise and search their notes.
 
-- Note Categories
-- Note Tags
-- Search Notes
-- Improved filtering
-- Better note organization
+The AI agent analyzed the existing repository and implemented the following improvements:
 
-The existing CRUD functionality has been preserved.
+- Categories for notes
+- Tags for notes
+- Search functionality
+- Better organization of notes
+- Preserved all existing CRUD operations
 
 ---
 
@@ -44,70 +44,123 @@ ConversAILabs-Assignment
     ├── app/
     ├── config/
     ├── server.js
-    └── package.json
+    ├── package.json
+    └── Readme.md
 ```
 
 ---
 
 # Architecture
 
-The solution consists of two independent parts.
+The solution consists of two independent components.
 
-## 1. AI Agent (Python)
+## 1. Python AI Agent
 
-The AI Agent is responsible for:
+The AI agent is responsible for:
 
 - Understanding the user request
 - Exploring the repository
-- Identifying relevant files
+- Detecting important files
 - Creating an execution plan
-- Generating code changes
-- Producing a summary of modifications
+- Generating code modifications
+- Summarizing completed work
 
-The Node.js application itself is not rewritten in Python.
+The AI agent does **not** rewrite the Node.js project. Instead, it analyzes the existing codebase and determines where modifications are required.
 
 ---
 
 ## 2. Node.js Application
 
-The existing Express and MongoDB application was modified by adding:
+The original Express + MongoDB application was enhanced by adding:
 
 - Categories
 - Tags
 - Search functionality
-- Improved organization features
+- Better note organization
 
-The original CRUD operations continue to work without breaking existing functionality.
+All original CRUD APIs continue to work as before.
 
 ---
 
-# Agent Workflow
+# AI Agent Workflow
 
-The AI agent follows these steps:
+The AI agent performs the following workflow:
 
-1. Read the user request
-2. Explore the repository structure
-3. Detect important files
-4. Create an execution plan
-5. Generate code changes
-6. Update the Node.js project
-7. Summarize the completed work
+### Step 1
+
+Read the user's product request.
+
+Example:
+
+> Improve the application so users can better organise and search their notes.
+
+### Step 2
+
+Explore the repository recursively.
+
+The agent scans folders and identifies important project files.
+
+### Step 3
+
+Identify relevant files automatically.
+
+Examples:
+
+- Models
+- Controllers
+- Routes
+- Configuration files
+
+### Step 4
+
+Create a brief execution plan.
+
+Example:
+
+- Extend Note model
+- Update CRUD logic
+- Add search capability
+- Preserve existing APIs
+
+### Step 5
+
+Generate the required code changes.
+
+### Step 6
+
+Update the Node.js application.
+
+### Step 7
+
+Generate a summary of the completed implementation.
 
 ---
 
 # Repository Exploration
 
-The AI agent automatically explored the repository before making changes.
+Before making any modifications, the AI agent automatically explored the repository structure.
 
-Important files identified include:
+The exploration process included:
 
-- app/models/note.model.js
-- app/controllers/note.controller.js
-- app/routes/note.routes.js
-- config/database.config.js
-- server.js
+- Scanning project directories
+- Detecting Express application structure
+- Identifying Models
+- Identifying Controllers
+- Identifying Routes
+- Identifying Configuration files
+- Determining which files needed modification based on the user's request
 
-These files were modified to implement the requested functionality.
+The following files were identified as relevant:
+
+```
+app/models/note.model.js
+app/controllers/note.controller.js
+app/routes/note.routes.js
+config/database.config.js
+server.js
+```
+
+The agent modified only the required files while preserving the existing application structure.
 
 ---
 
@@ -115,16 +168,14 @@ These files were modified to implement the requested functionality.
 
 ## Categories
 
-Each note can now be assigned to a category.
+Each note can now belong to a category.
 
-Example:
+Examples:
 
-```
-Study
-Work
-Personal
-Testing
-```
+- Work
+- Study
+- Personal
+- Testing
 
 ---
 
@@ -135,52 +186,80 @@ Each note supports multiple tags.
 Example:
 
 ```
-["NodeJS","MongoDB"]
+[
+    "NodeJS",
+    "MongoDB"
+]
 ```
 
 ---
 
 ## Search
 
-Users can search notes using:
+Notes can now be searched using:
 
 ```
 GET /notes?search=keyword
 ```
 
-The search checks the note title and content.
+Search checks both:
+
+- Title
+- Content
+
+Search is case-insensitive.
 
 ---
 
-## CRUD Operations
+## Improved Note Organization
 
-The following endpoints were tested successfully.
+Users can now organize notes using:
 
-### Create
+- Categories
+- Tags
+- Search
+
+without affecting existing CRUD functionality.
+
+---
+
+# CRUD Operations Tested
+
+The following endpoints were tested successfully using Postman.
+
+## Create
 
 ```
 POST /notes
 ```
 
-### Read
+---
+
+## Read
 
 ```
 GET /notes
 ```
 
-### Search
+---
+
+## Search
 
 ```
 GET /notes?search=keyword
 ```
 
-### Update
+---
+
+## Update
 
 ```
 PUT /notes/:noteId
 ```
 
-### Delete
+---
+
+## Delete
 
 ```
 DELETE /notes/:noteId
@@ -191,40 +270,38 @@ DELETE /notes/:noteId
 # Assumptions
 
 - MongoDB Atlas is used as the database.
-- Environment variables are stored using a .env file.
-- Existing APIs should continue to work.
+- Environment variables are stored in a .env file.
+- Existing CRUD functionality must continue to work.
 - Search should be case-insensitive.
+- Categories are optional.
+- Multiple tags can be assigned to each note.
 
 ---
 
 # Trade-offs
 
-- Regex search was chosen for simplicity.
-- Categories remain optional.
+The following design decisions were made:
+
+- Regular Expression search was used for simplicity.
 - Tags are stored as a string array.
-- Full-text indexing was added for future improvements.
+- Categories remain optional.
+- Existing API structure was preserved.
+- MongoDB text indexing can be extended further in the future for better search performance.
 
 ---
 
 # Technologies Used
 
-Python 3.11+
-
-Node.js
-
-Express.js
-
-MongoDB Atlas
-
-Mongoose
-
-dotenv
-
-Git
-
-GitHub
-
-Postman
+- Python 3.11+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- dotenv
+- Git
+- GitHub
+- Postman
+- ChatGPT (AI-assisted development)
 
 ---
 
@@ -236,13 +313,26 @@ Postman
 npm install
 ```
 
-## Start server
+## Configure environment variables
+
+Create a `.env` file.
+
+Example:
+
+```
+MONGO_URI=<your_mongodb_connection_string>
+PORT=3000
+```
+
+---
+
+## Start the server
 
 ```
 node server.js
 ```
 
-The application runs at
+Server runs at:
 
 ```
 http://localhost:3000
@@ -252,31 +342,39 @@ http://localhost:3000
 
 # API Examples
 
-Create Note
+## Create Note
 
 ```
 POST /notes
 ```
 
-Get Notes
+---
+
+## Get Notes
 
 ```
 GET /notes
 ```
 
-Search Notes
+---
+
+## Search Notes
 
 ```
 GET /notes?search=Node
 ```
 
-Update Note
+---
+
+## Update Note
 
 ```
 PUT /notes/:noteId
 ```
 
-Delete Note
+---
+
+## Delete Note
 
 ```
 DELETE /notes/:noteId
@@ -291,12 +389,30 @@ This repository contains:
 - Python AI Coding Agent
 - Modified Node.js application
 - Documentation
-- Working implementation of note organization and search features
+- Working implementation of note organization features
+- Search functionality
+- Preserved CRUD APIs
+
+---
+
+# Deliverables
+
+This submission includes:
+
+✅ Python AI Agent source code
+
+✅ Modified Node.js application
+
+✅ README documentation
+
+✅ GitHub repository
+
+⬜ Screen recording (Google Drive link to be added during submission)
 
 ---
 
 # Author
 
-Mohammed Kaif
+**Mohammed Kaif**
 
 ConversAI Labs AI Coding Agent Assignment
